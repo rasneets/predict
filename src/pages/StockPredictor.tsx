@@ -17,6 +17,8 @@ interface Prediction {
   models: { name: string; r2Score: number }[];
 }
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const StockPredictor: React.FC = () => {
   const [stockSymbol, setStockSymbol] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -35,7 +37,7 @@ const StockPredictor: React.FC = () => {
         throw new Error('Please provide a valid stock symbol');
       }
 
-      const response = await axios.post('http://localhost:5000/api/stocks/predict', {
+      const response = await axios.post(`${API_URL}/api/stocks/predict`, {
         stockSymbol,
         currentPrice: 100 // Using a default value since we're removing the input
       });
@@ -58,7 +60,7 @@ const StockPredictor: React.FC = () => {
         throw new Error('Please provide all required fields');
       }
 
-      const response = await axios.post('http://localhost:5000/api/stocks/predict-range', {
+      const response = await axios.post(`${API_URL}/api/stocks/predict-range`, {
         stockSymbol,
         startDate,
         endDate
@@ -73,8 +75,8 @@ const StockPredictor: React.FC = () => {
   };
 
   const handleTabChange = (value: string) => {
-    setFetchError(''); // Clear error when changing tabs
-    setPrediction(null); // Optional: clear prediction when changing tabs
+    setFetchError('');
+    setPrediction(null);
   };
 
   return (
